@@ -15,6 +15,7 @@ type AthenaDataSetProps = {
   dataSourceArn: string;
   importMode?: string;
   inputColumnsDef: quicksight.CfnDataSet.InputColumnProperty[];
+  lookbackWindowColumnName: string;
   qs_util: QsUtil;
   qsUserName: string;
   qsUserRegion: string;
@@ -39,12 +40,24 @@ export class AthenaDataSet extends Construct {
   constructor(scope: Construct, id: string, props: AthenaDataSetProps) {
     super(scope, id);
 
-    const { catalogName, databaseSchemaName, dataSetName, dataSourceArn, importMode, inputColumnsDef, spiceRefreshInterval, qs_util, qsUserName, qsUserRegion, tableName } = props;
+    const { catalogName, databaseSchemaName, dataSetName, dataSourceArn, importMode, inputColumnsDef, lookbackWindowColumnName, spiceRefreshInterval, qs_util, qsUserName, qsUserRegion, tableName } =
+      props;
 
     const dataSet = new quicksight.CfnDataSet(this, dataSetName, {
       awsAccountId: Stack.of(this).account,
       dataSetId: randomUUID(),
       name: dataSetName,
+      dataSetRefreshProperties: {
+        refreshConfiguration: {
+          incrementalRefresh: {
+            lookbackWindow: {
+              columnName: lookbackWindowColumnName,
+              size: 7,
+              sizeUnit: "DAY",
+            },
+          },
+        },
+      },
       physicalTableMap: {
         physicalTableMapKey: {
           relationalTable: {

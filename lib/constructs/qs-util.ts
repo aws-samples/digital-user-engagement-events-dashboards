@@ -11,8 +11,8 @@ export class QsUtil {
   }
 
   /* -------------- Constants and Objects for QuickSight -------------- */
+  public readonly lookbackWindowColumnName = "event_timestamp";
 
-  // private salt;
   /* -------------- Constants and Objects for QuickSight -------------- */
 
   public readonly emailAllEventsDataSetName = (): string => this.resourcePrefix + "email_all_events_data_set_cdk";
@@ -25,7 +25,7 @@ export class QsUtil {
 
   /* -------------- QuickSight Refresh Settings -------------- */
   public readonly qsDefaultImportMode = "SPICE";
-  public readonly qsSpiceRefreshType = "FULL_REFRESH";
+  public readonly qsSpiceRefreshType = "INCREMENTAL_REFRESH"; //"FULL_REFRESH" is the other option
 
   /* -------------- Constants and Objects for IAM Role Changes -------------- */
 
