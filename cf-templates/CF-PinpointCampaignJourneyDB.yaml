@@ -509,6 +509,7 @@ Resources:
                           event_name = "null"
                       add_to_db(id_to_create, name, 'campaign', seg_id, event_name)
               else:
+                  add_to_db("initialize_schema", "initialize_schema", "initialize_schema", "initialize_schema", "initialize_schema")
                   print("No campaigns found")               
               # Get Pinpoint Journeys
               response = pinpoint.list_journeys(ApplicationId = application_id, PageSize = '15')
@@ -549,6 +550,7 @@ Resources:
                       seg_id = campaign['SegmentId']
                       add_seg_to_db(id_to_create, name)
               else:
+                  add_seg_to_db("initialize_schema", "initialize_schema")
                   print("No segments found")
                   
           # Create Campaigns / Journey DynamoDB items

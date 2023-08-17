@@ -20,9 +20,9 @@ const stack = new MainApp(app, "PinpointAnalytics", {
   },
 
   //Attributes to change
-  dueDbBucketName: "due-database-lp7jz6mzm0us-east-1",
-  pinpointProjectId: "5f15f080a1024dd188fe09330c55a062",
-  qsUserName: "Admin/sirbia-Isengard",
+  dueDbBucketName: "{bucket-arn}",
+  pinpointProjectId: "{pinpoint-project-id}",
+  qsUserName: "{quicksight-username}", //must have qs admin role
 
   //Default settings
   athenaWorkGroupName: "primary", //Can use any workgroup. Athena workgroup output bucket must be setup. Go to Athena > Workgroups > "workgroup" > Edit > Query result configuration
