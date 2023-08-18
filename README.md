@@ -1,3 +1,5 @@
+For the latest information an context for this project, please see the following blog:  LINK_PENDING
+
 Prerequisites
 
 - Deploy the Digital User Engagement (DUE) Event Database solution before continuing
@@ -88,46 +90,47 @@ The AWS Cloud Development Kit (AWS CDK) is an open-source software development f
 
 Open the file at digital-user-engagement-events-dashboards/bin/pinpoint-bi-analysis.ts for editing in your IDE.
 
-    1. Edit the following code block your your solution with the information you have gathered in the previous steps.  Please reference Table 1 for a description of each editable field.
+   1. Edit the following code block your your solution with the information you have gathered in the previous steps.  Please reference Table 1 for a description of each editable field.
 
-const resourcePrefix = "pinpoint*analytics*";
+    const resourcePrefix = "pinpoint*analytics*";
 
-...
+    new MainApp(app, "PinpointAnalytics", {
+    env: {
+    region: "us-east-1",
+    }
 
-new MainApp(app, "PinpointAnalytics", {
-env: {
-region: "us-east-1",
-}
+    //Attributes to change
+    dueDbBucketName: "{bucket-name}",
+    pinpointProjectId: "{pinpoint-project-id}",
+    qsUserName: "{quicksight-username}",
 
-//Attributes to change
-dueDbBucketName: "{bucket-name}",
-pinpointProjectId: "{pinpoint-project-id}",
-qsUserName: "{quicksight-username}",
+    //Default settings
+    athenaWorkGroupName: "primary",
+    dataLakeDbName: "due_eventdb",
+    dateRangeNumberOfMonths: 6,
+    qsUserRegion: "us-east-1",
+    qsDefaultServiceRole: "aws-quicksight-service-role-v0",
+    spiceRefreshInterval: "HOURLY",
 
-//Default settings
-athenaWorkGroupName: "primary",
-dataLakeDbName: "due_eventdb",
-dateRangeNumberOfMonths: 6,
-qsUserRegion: "us-east-1",
-qsDefaultServiceRole: "aws-quicksight-service-role-v0",
-spiceRefreshInterval: "HOURLY",
+    //Constants
+    athena_util: athena_util,
+    qs_util: qs_util,
+    });
 
-//Constants
-athena_util: athena_util,
-qs_util: qs_util,
-});
 
-Attribute, definition, and example from code snippet above
-resourcePrefix: The prefix for all created Athena and QuickSight resources. Example - "pinpoint*analytics*"
-region: Where new resources will be deployed. This must be the same region that the DUE event database solution was deployed. Example - "us-east-1"
-dueDbBucketName: The name of the DUE event database S3 Bucket. Example - "due-database-xxxxxxxxxxus-east-1"
-qsUserName: The name of your QuickSight User. Example - "Admin/my-user"
-athenaWorkGroupName: The Athena workgroup that was previously configured. Example - "primary"
-dataLakeDbName: The Glue database created during the DUE event database solution. By default the database name is "due_eventdb". Example - "due_eventdb"
-dateRangeNumberOfMonths: The number of months of data the Athena views will contain. QuickSight SPICE datasets will contain this many months of data initially and on full refresh. The QuickSight dataset will add new data incrementally without deleting historical data. Example - "6"
-qsUserRegion: The region where your quicksight user exists. By default, new users will be created in us-east-1. You can check your user location with the AWS CLI: aws quicksight list-users --aws-account-id {accout-id} --namespace default and look for the region in the arn. Example - "us-east-1"
-qsDefaultServiceRole: The service role collected during Step 3. Example - "aws-quicksight-service-role-v0"
-spiceRefreshInterval: Options Include "HOURLY", "DAILY" - This is how often the SPICE 7-day incremental window will be refreshed. Example - "DAILY"
+Attributes, definitions, and examples from code snippet above
+| Attribute | Description | Example |
+| --------- | ----------- | ------- |
+| resourcePrefix | The prefix for all created Athena and QuickSight resources. |"pinpoint*analytics*" |
+| region | Where new resources will be deployed. This must be the same region that the DUE event database solution was deployed. | "us-east-1" |
+| dueDbBucketName | The name of the DUE event database S3 Bucket. | "due-database-xxxxxxxxxxus-east-1" |
+| qsUserName | The name of your QuickSight User. | "Admin/my-user" |
+| athenaWorkGroupName | The Athena workgroup that was previously configured. | "primary"|
+| dataLakeDbName | The Glue database created during the DUE event database solution. By default the database name is "due_eventdb". | "due_eventdb" |
+| dateRangeNumberOfMonths | The number of months of data the Athena views will contain. QuickSight SPICE datasets will contain this many months of data initially and on full refresh. The QuickSight dataset will add new data incrementally without deleting historical data. | "6" |
+| qsUserRegion | The region where your quicksight user exists. By default, new users will be created in us-east-1. You can check your user location with the AWS CLI: aws quicksight list-users --aws-account-id {accout-id} --namespace default and look for the region in the arn. | "us-east-1" |
+| qsDefaultServiceRole | The service role collected during Step 3. | "aws-quicksight-service-role-v0" |
+|spiceRefreshInterval | Options Include "HOURLY", "DAILY" - This is how often the SPICE 7-day incremental window will be refreshed. | "DAILY" |
 
 Step 5 - Deploy
 
