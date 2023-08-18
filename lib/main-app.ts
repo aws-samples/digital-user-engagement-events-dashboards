@@ -26,8 +26,8 @@ interface MainAppProps extends StackProps {
 }
 
 export class MainApp extends Stack {
-  athenaViewStack: AthenaViewConstruct;
-  pinpointAthenaQuickSightAnalysis: QuicksightResourcesConstruct;
+  athenaViewConstruct: AthenaViewConstruct;
+  quicksightResourcesConstruct: QuicksightResourcesConstruct;
   pinpointCampaignJourneyDB: PinpointCampaignJourneyDB;
 
   constructor(scope: Construct, id: string, props: MainAppProps) {
@@ -62,7 +62,7 @@ export class MainApp extends Stack {
     listS3BucketArnForQuickSightAccess.push(this.pinpointCampaignJourneyDB.spillBucketArn);
 
     //Athena View Resources
-    this.athenaViewStack = new AthenaViewConstruct(this, "athena-view-stack", {
+    this.athenaViewConstruct = new AthenaViewConstruct(this, "athena-view-stack", {
       athenaDynamoLambdaArn: this.pinpointCampaignJourneyDB.athenaDynamoLambdaArn,
       athenaWorkGroupName: athenaWorkGroupName,
       athena_util: athena_util,
@@ -74,7 +74,7 @@ export class MainApp extends Stack {
     });
 
     //Quicksight resources
-    this.pinpointAthenaQuickSightAnalysis = new QuicksightResourcesConstruct(this, "pinpoint-athena-quick-sight-analysis", {
+    this.quicksightResourcesConstruct = new QuicksightResourcesConstruct(this, "pinpoint-athena-quick-sight-analysis", {
       athenaDynamoLambdaArn: this.pinpointCampaignJourneyDB.athenaDynamoLambdaArn,
       athena_util: athena_util,
       athenaWorkGroupName: athenaWorkGroupName,
@@ -86,7 +86,7 @@ export class MainApp extends Stack {
       spiceRefreshInterval: spiceRefreshInterval,
     });
 
-    this.athenaViewStack.node.addDependency(this.pinpointCampaignJourneyDB);
-    this.pinpointAthenaQuickSightAnalysis.node.addDependency(this.athenaViewStack);
+    this.athenaViewConstruct.node.addDependency(this.pinpointCampaignJourneyDB);
+    this.quicksightResourcesConstruct.node.addDependency(this.athenaViewConstruct);
   }
 }

@@ -347,6 +347,7 @@ Resources:
 
   LogBucketPolicy:
     Type: AWS::S3::BucketPolicy
+    DependsOn: CloudTrailPinpointS3
     Properties:
       Bucket: !Ref LogBucket
       PolicyDocument:
@@ -358,11 +359,7 @@ Resources:
               Service: logging.s3.amazonaws.com
             Action:
               - "s3:PutObject"
-            Resource: !Join
-              - ""
-              - - "arn:aws:s3:::"
-                - !Ref LogBucket
-                - /*
+            Resource: !Sub "arn:aws:s3:::${LogBucket}/*"
             Condition:
               ArnLike:
                 "aws:SourceArn": !GetAtt CloudTrailPinpointS3.Arn
@@ -382,6 +379,7 @@ Resources:
   # CloudTrail
   PinpointEventsCloudTrail:
     Type: AWS::CloudTrail::Trail
+    DependsOn: LogBucket
     Properties:
       IsLogging: True
       S3BucketName: !Ref CloudTrailPinpointS3

@@ -27,10 +27,10 @@ const stack = new MainApp(app, "PinpointAnalytics", {
   //Default settings
   athenaWorkGroupName: "primary", //Can use any workgroup. Athena workgroup output bucket must be setup. Go to Athena > Workgroups > "workgroup" > Edit > Query result configuration
   dataLakeDbName: "due_eventdb", //Created during the DUE DB project. Default name is "due_eventdb"
-  dateRangeNumberOfMonths: 6, //The number of months of data the Athena views and QuickSight SPICE datasets will contain
+  dateRangeNumberOfMonths: 6, //The number of months of data the Athena views will contain. QuickSight SPICE datasets will contain this many months of data initially and on full refresh The QuickSight dataset will add new data incrementally without deleting historical data.
   qsUserRegion: "us-east-1", //Use CLI command aws quicksight list-users --aws-account-id {accout-id} --namespace default and look for the region in the arn
   qsDefaultServiceRole: "aws-quicksight-service-role-v0", // QuickSight uses aws-quicksight-s3-consumers-role-v0 by Default. If not present then QS uses aws-quicksight-service-role-v0
-  spiceRefreshInterval: "DAILY", //Options Include "HOURLY", "DAILY" - Only Enterprise accounts can setup Hourly Data Refresh
+  spiceRefreshInterval: "DAILY", //Options Include "HOURLY", "DAILY" - This is how often the SPICE 7-day incremental window will be refreshed
 
   //Constants
   athena_util: athena_util,
